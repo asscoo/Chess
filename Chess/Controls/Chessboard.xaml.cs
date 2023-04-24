@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Chess.Classes;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,7 @@ namespace Chess.Controls
     public partial class Chessboard : UserControl
     {
         Rectangle[,] _fields = new Rectangle[8,8];
+        List<Chess.Classes.Figure> _figures = new List<Chess.Classes.Figure>();
         int _chessboardWidth = 600;
         public Chessboard()
         {
@@ -33,13 +36,29 @@ namespace Chess.Controls
                     _fields[i,j].Width = _chessboardWidth/8;
                     _fields[i, j].Height = _chessboardWidth / 8;
                     if((i%2 == 0 && j%2 != 0) || (i%2 != 0 && j%2==0))
-                        _fields[i, j].Fill = Brushes.White;
+                        _fields[i, j].Fill = Brushes.AntiqueWhite;
                     else
-                        _fields[i,j].Fill = Brushes.Black;
+                        _fields[i,j].Fill = Brushes.Wheat;
+
 
                     ChessboardScaffolding.Children.Add(_fields[i,j]);
                     Grid.SetRow(_fields[i, j], i);
                     Grid.SetColumn(_fields[i, j], j);
+
+                    if(i == 1)
+                    {
+                        _figures.Add(new Pawn(Utils.BlackPawnImagePath, (_chessboardWidth/8)-20));
+                        ChessboardScaffolding.Children.Add(_figures.Last().image);
+                        Grid.SetRow(_figures.Last().image, i);
+                        Grid.SetColumn(_figures.Last().image, j);
+                    }
+                    if(i == 6)
+                    {
+                        _figures.Add(new Pawn(Utils.WhitePawnImagePath, (_chessboardWidth / 8)-20));
+                        ChessboardScaffolding.Children.Add(_figures.Last().image);
+                        Grid.SetRow(_figures.Last().image, i);
+                        Grid.SetColumn(_figures.Last().image, j);
+                    }
                 }
             }
         }
